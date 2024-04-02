@@ -1,6 +1,7 @@
 package dbtest.dbtest.controller;
 
 import dbtest.dbtest.domain.Member;
+import dbtest.dbtest.repository.DbMemberRepository;
 import dbtest.dbtest.service.MemberService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
+    private final DbMemberRepository dbMemberRepository;
 
     @PostMapping("/register")
     public String join(@ModelAttribute MemberDto memberDto) {
@@ -37,26 +39,39 @@ public class MemberController {
     public String viewMyprofile(HttpSession httpSession, Model model) {
         String userId = (String) httpSession.getAttribute("userId");
         Optional<Member> memberDto = memberService.findByUserId(userId);
-        model.addAttribute("user", memberDto);
-        return "myprofile";
+        if (memberDto.isPresent()) {
+            Member member = memberDto.get();
+            model.addAttribute("user", member);
+            return "myprofile";
+        } else {
+            model.addAttribute("errorMessage", "회원 정보를 찾을 수 없습니다.");
+            return "error";
+        }
+
     }
 
 
     @PostMapping("/myprofile")
-    public String updateMyprofile(HttpSession httpSession, Model model, @ModelAttribute MemberDto updataMemberDto) {
-        String data = (String) httpSession.getAttribute("userId");
-        MemberDto memberDto = memberService.updateMyProfile(httpSession.getId(),updataMemberDto);
-        if(memberDto!=null) {
-            model.addAttribute("updateprofile", memberDto);
-            return "myprofile";
-        } else return "정보없음";
-    }
-
-    @PostMapping("/delete")
-    public String deleteUser(@RequestParam("userId") Long id) {
-        memberService.deleteById(id);
+    public String updateMyprofile(HttpSession httpSession, @ModelAttribute MemberDto updateMemberDto) {
+        String userId = (String) httpSession.getAttribute("userId");
+        MemberDto memberDto = memberService.updateMyProfile(userId, updateMemberDto);
         return "success";
     }
 
-
+    //    @PostMapping("/delete")
+//    public String deleteUser(@RequestParam("userId") Long id) {
+//        memberService.deleteById(id);
+//        return "success";
+//    }
+    @PostMapping("/delete")
+    public String deleteUser(HttpSession httpSession) {
+        String userId = (String) httpSession.getAttribute("userId");
+        Optional<Member> memberDto = memberService.findByUserId(userId);
+        if (memberDto.isPresent()) {
+            memberService.deleteById(memberDto.get().getId());
+            return "success";
+        } else {
+            return "error";
+        }
+    }
 }

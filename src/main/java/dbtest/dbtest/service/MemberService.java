@@ -17,9 +17,10 @@ import java.util.Optional;
 public class MemberService {
     private final DbMemberRepository dbMemberRepository;
     private final Logger log = LoggerFactory.getLogger(MemberService.class);
+
     //회원가입
     public boolean join(MemberDto memberDto) {
-        if (memberDto.getUserId()==null || memberDto.getUserPwd()==null || memberDto.getUserEmail()==null|| memberDto.getUserName()==null) {
+        if (memberDto.getUserId() == null || memberDto.getUserPwd() == null || memberDto.getUserEmail() == null || memberDto.getUserName() == null) {
             log.error("값이 비어있음");
             return false;
         }
@@ -41,15 +42,16 @@ public class MemberService {
     //로그인
     public Optional<MemberDto> login(MemberDto memberDto) {
         Optional<Member> memberId = dbMemberRepository.findByUserId(memberDto.getUserId());
-        if(memberId.isPresent()){
+        if (memberId.isPresent()) {
             Member member = memberId.get();
-            if (member.getUserPwd().equals(memberDto.getUserPwd())){
+            if (member.getUserPwd().equals(memberDto.getUserPwd())) {
 
                 return Optional.of(MemberDto.entityToDto(member));
+            } else {
+                log.error("비번 틀림");
+                return Optional.empty();
             }
-            else{log.error("비번 틀림"); return Optional.empty();}
-        }
-        else {
+        } else {
             log.error("아이디 없음");
             return Optional.empty();
         }
@@ -62,25 +64,23 @@ public class MemberService {
     public Optional<Member> findByUserId(String userId) {
         return dbMemberRepository.findByUserId(userId);
     }
-    //정보 수정
-    public MemberDto updateMyProfile(String memberId, MemberDto updateMemberDto){
-        Optional<Member> data = dbMemberRepository.findByUserId(memberId);
-        if (data.isPresent()){
-            Member member = data.get();
-            member.setUserEmail(updateMemberDto.getUserEmail());
-            member.setUserName(updateMemberDto.getUserName());
-            member.setUserPwd(updateMemberDto.getUserPwd());
-            dbMemberRepository.save(member);
 
-            //Member member = Member.builder()
-            //                .userEmail(memberDto.getUserEmail())
-            //                .userId(memberDto.getUserId())
-            //                .userPwd(memberDto.getUserPwd())
-            //                .userName(memberDto.getUserName())
-            //                .build();
+    //정보 수정
+    public MemberDto updateMyProfile(String memberId, MemberDto updateMemberDto) {
+        Optional<Member> data = dbMemberRepository.findByUserId(memberId);
+        System.out.println(data);
+        if (data.isPresent()) {
+            Member member = data.get();
+            System.out.println(member);
+            if (updateMemberDto.getUserEmail() != null && !updateMemberDto.getUserEmail().isEmpty())
+                member.setUserEmail(updateMemberDto.getUserEmail());
+            if (updateMemberDto.getUserName() != null&& !updateMemberDto.getUserName().isEmpty())
+                member.setUserName(updateMemberDto.getUserName());
+            if (updateMemberDto.getUserPwd() != null&& !updateMemberDto.getUserPwd().isEmpty())
+                member.setUserPwd(updateMemberDto.getUserPwd());
+            dbMemberRepository.save(member);
             return MemberDto.entityToDto(member);
-        }
-        else {
+        } else {
             log.error("id 찾을수  없음");
             return null;
         }

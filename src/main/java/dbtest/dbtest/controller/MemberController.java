@@ -19,15 +19,30 @@ public class MemberController {
     private final MemberService memberService;
     private final DbMemberRepository dbMemberRepository;
 
+    //    @PostMapping("/register")
+//    public String join(@ModelAttribute MemberDto memberDto) {
+//        if (memberService.join(memberDto))
+//            return "success";
+//        else return "fail";
+//    }
+//    @PostMapping("/login")
+//    public String login(@ModelAttribute MemberDto memberDto, HttpSession httpSession) {
+//        Optional<MemberDto> login = memberService.login(memberDto);
+//        if (login.isPresent()) {
+//            httpSession.setAttribute("userId", login.get().getUserId());
+//            return "success";
+//        } else return "fail";
+//    }
     @PostMapping("/register")
-    public String join(@ModelAttribute MemberDto memberDto) {
+    public String join(@RequestBody MemberDto memberDto) {
+
         if (memberService.join(memberDto))
             return "success";
         else return "fail";
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute MemberDto memberDto, HttpSession httpSession) {
+    public String login(@RequestBody MemberDto memberDto, HttpSession httpSession) {
         Optional<MemberDto> login = memberService.login(memberDto);
         if (login.isPresent()) {
             httpSession.setAttribute("userId", login.get().getUserId());

@@ -1,12 +1,11 @@
 package dbtest.dbtest.controller;
 
 import dbtest.dbtest.domain.Member;
+import dbtest.dbtest.dto.MemberDto;
 import dbtest.dbtest.repository.DbMemberRepository;
 import dbtest.dbtest.service.MemberService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

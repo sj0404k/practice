@@ -1,4 +1,4 @@
-package dbtest.dbtest.controller;
+package dbtest.dbtest.dto;
 
 import dbtest.dbtest.domain.Member;
 import lombok.Data;

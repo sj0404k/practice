@@ -1,6 +1,6 @@
 package dbtest.dbtest.service;
 
-import dbtest.dbtest.controller.MemberDto;
+import dbtest.dbtest.dto.MemberDto;
 import dbtest.dbtest.domain.Member;
 import dbtest.dbtest.repository.DbMemberRepository;
 import lombok.RequiredArgsConstructor;

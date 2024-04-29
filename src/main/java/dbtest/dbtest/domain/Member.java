@@ -1,6 +1,6 @@
 package dbtest.dbtest.domain;
 
-import dbtest.dbtest.controller.MemberDto;
+import dbtest.dbtest.dto.MemberDto;
 import jakarta.persistence.*;
 import lombok.*;
 

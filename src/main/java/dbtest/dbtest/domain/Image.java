@@ -25,7 +25,7 @@ public class Image {
 
     @Column(nullable = false)
     private String storedName; // 파일이 저장될 경우 가지게 될 이름
-
+    //git 브랜치 테스트용
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)

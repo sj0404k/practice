@@ -25,12 +25,16 @@ public class Board {
     private String title;
 
     @Column(nullable = false, name = "content")
-    @Lob
     private String content;
 
     @Column(nullable = false, name = "writer")
     private String writer;
 
-    @OneToMany(mappedBy = "board", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<Image> imageList = new ArrayList<>();
+    public Board(String title, String content, String writer){
+        this.title =title;
+        this.content = content;
+        this.writer = writer;
+    }
+//    @OneToMany(mappedBy = "board", orphanRemoval = true, cascade = CascadeType.ALL)
+//    private List<Image> imageList = new ArrayList<>();
 }

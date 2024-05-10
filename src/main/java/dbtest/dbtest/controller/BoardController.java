@@ -12,13 +12,18 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
-@RequestMapping
+@RequestMapping(value = "/boards")
 public class BoardController {
 
     private final BoardService boardService;
-    @PostMapping("/boards")
+    @GetMapping
+    public ResponseEntity<List> getList() throws Exception{
+        return  new ResponseEntity<>(boardService.getListAll(), HttpStatus.OK);
+    }
+
+    @PostMapping
     public ResponseEntity<?> save(@RequestBody Board board) throws Exception {
         return new ResponseEntity<Boolean>(boardService.save(board), HttpStatus.OK);
     }
@@ -28,13 +33,13 @@ public class BoardController {
 //    }
 
 
-//    @PostMapping("/board")
+//    @PostMapping
 //    @ResponseStatus(HttpStatus.OK)
 //    public void create(@RequestParam("files") List<MultipartFile> files){
 //        boardService.create(files);
 //    }
 //
-//    @PostMapping("/board/{id}")
+//    @PostMapping
 //    @ResponseStatus(HttpStatus.OK)
 //    public void change(@PathVariable Long id, @RequestParam("files") List<MultipartFile> files) {
 //        boardService.change(id, files);

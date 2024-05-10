@@ -1,40 +1,47 @@
 package dbtest.dbtest.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicInsert;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 
+@Getter
 @Entity
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@DynamicInsert
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Board {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "board_id")
+    private Long boardId;
 
-    @Column(nullable = false, name = "title")
+    @Column(length = 50)
     private String title;
 
-    @Column(nullable = false, name = "content")
-    private String content;
+    @Column
+    private String contents;
 
-    @Column(nullable = false, name = "writer")
-    private String writer;
+    @CreationTimestamp
+    @Column
+    private LocalDateTime createdAt;
 
-    public Board(String title, String content, String writer){
-        this.title =title;
-        this.content = content;
-        this.writer = writer;
-    }
-//    @OneToMany(mappedBy = "board", orphanRemoval = true, cascade = CascadeType.ALL)
-//    private List<Image> imageList = new ArrayList<>();
+    @UpdateTimestamp
+    @Column
+    private LocalDateTime updatedAt;
+
+    @Column(name = "test")
+    private Integer check12;
+
+    @Column(name = "test2")
+    private Integer majorId12;
+
+    // board가 관계 주인   게시판 로드시 즉시 댓글 가져오기  보드 삭제시 댓글 자동삭제
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OrderBy("commentId asc")
+    private List<Comment> comments;
 }

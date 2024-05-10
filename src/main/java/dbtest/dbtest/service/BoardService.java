@@ -2,23 +2,32 @@ package dbtest.dbtest.service;
 
 import dbtest.dbtest.domain.Board;
 import dbtest.dbtest.domain.Image;
+import dbtest.dbtest.dto.BoardDto;
 import dbtest.dbtest.dto.BoardRequestDto;
 import dbtest.dbtest.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BoardService {
     private final BoardRepository boardRepository;
     private final ImageManager imageManager;
-
     @Transactional
+    public List<BoardDto> getListAll() throws Exception {
+        List<Board> boards = boardRepository.findAllByOrderByCreatedAtDesc();
+        List<BoardDto> getListDTO = new ArrayList<>();
+        boards.forEach(s -> getListDTO.add(BoardDto.GetBoardDto(s)));
+        return getListDTO;
+    }
     public Boolean save(Board board) throws Exception {
         try {
             boardRepository.save(board);
@@ -33,7 +42,7 @@ public class BoardService {
         try {
             Board board = Board.builder()
                     .title(request.getTitle())
-                    .content(request.getContents())
+                    .contents(request.getContents())
                     .build();
 
             boardRepository.save(board);

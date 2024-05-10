@@ -20,8 +20,8 @@ public class BoardDto {
     private String contents;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Integer check12;
-    private Integer majorId12;
+    private Integer check;
+    private Integer majorId;
     private List<Comment> comments;
 
     public static BoardDto GetBoardDto(Board board){
@@ -31,8 +31,8 @@ public class BoardDto {
                 board.getContents(),
                 board.getCreatedAt(),
                 board.getUpdatedAt(),
-                board.getCheck12(),
-                board.getMajorId12(),
+                board.getCheck(),
+                board.getMajorId(),
                 board.getComments()
         );
     }

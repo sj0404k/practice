@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -35,10 +36,10 @@ public class Board {
     private LocalDateTime updatedAt;
 
     @Column(name = "test")
-    private Integer check12;
+    private Integer check;
 
     @Column(name = "test2")
-    private Integer majorId12;
+    private Integer majorId;
 
     // board가 관계 주인   게시판 로드시 즉시 댓글 가져오기  보드 삭제시 댓글 자동삭제
     @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)

@@ -1,6 +1,7 @@
 package dbtest.dbtest.controller;
 
 import dbtest.dbtest.domain.Board;
+import dbtest.dbtest.dto.BoardDto;
 import dbtest.dbtest.dto.BoardRequestDto;
 import dbtest.dbtest.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/boards")
+@RequestMapping(value = "/board")
 public class BoardController {
 
     private final BoardService boardService;
@@ -22,7 +23,10 @@ public class BoardController {
     public ResponseEntity<List> getList() throws Exception{
         return  new ResponseEntity<>(boardService.getListAll(), HttpStatus.OK);
     }
-
+    @GetMapping("/post")
+    public ResponseEntity<BoardDto> getListOne(BoardRequestDto.DetailDto request) throws  Exception{
+        return new ResponseEntity<BoardDto>(boardService.getDetail(request),HttpStatus.OK);
+    }
     @PostMapping
     public ResponseEntity<?> save(@RequestBody Board board) throws Exception {
         return new ResponseEntity<Boolean>(boardService.save(board), HttpStatus.OK);

@@ -28,6 +28,15 @@ public class BoardService {
         boards.forEach(s -> getListDTO.add(BoardDto.GetBoardDto(s)));
         return getListDTO;
     }
+    public BoardDto getDetail(BoardRequestDto.DetailDto request) throws Exception {
+        Board board = boardRepository.findById(request.getBoardID()).orElseThrow();
+        try {
+            BoardDto response = BoardDto.GetBoardDto(board);
+            return response;
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
+    }
     public Boolean save(Board board) throws Exception {
         try {
             boardRepository.save(board);

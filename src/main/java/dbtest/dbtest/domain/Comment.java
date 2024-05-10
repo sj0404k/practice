@@ -1,5 +1,6 @@
 package dbtest.dbtest.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -20,10 +21,18 @@ public class Comment {
     private Long commentId;
 
     @JoinColumn(name = "board_id")
+    @JsonBackReference
     @ManyToOne
     private Board board;
 
     @Column(columnDefinition = "TEXT")
     private String contents;
 
+    @CreationTimestamp
+    @Column
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column
+    private LocalDateTime updatedAt;
 }
